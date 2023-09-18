@@ -1,3 +1,6 @@
 sgfs-by-date.tar.gz
 88068-030-GOldmaster-robotChicken.sgf
 **/__pycache__
+**/.DS_STORE
+games/game_dumps/*
+games/search_state.pk1

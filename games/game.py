@@ -24,5 +24,12 @@ class Game:
     return int(size)
   
   def is_pass_move(self, input_string):
-    i = input_string.index('[')
-    return input_string[i+1] == ']'
+    # Note sometimes there are formats that don't conform to the standard.
+    # Something to look into. See 57165691
+    try:
+      i = input_string.index('[')
+      return input_string[i+1] == ']'
+    except:
+      return False
+  
+    

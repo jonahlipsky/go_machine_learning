@@ -16,6 +16,8 @@ class Game:
       
   def game_ends_in_two_passes(self, game):
     last_two = game.split('(')[-2:]
+    # Note that this is not always going to work. Sometimes the games
+    # are not structured like this. See 57165691.
     return self.is_pass_move(last_two[0]) and self.is_pass_move(last_two[1])
   
   def game_size(self, game):

@@ -29,6 +29,9 @@ if __name__ == '__main__':
       if game.dump_game():
         downloaded_games += 1
 
+        if downloaded_games % 10 == 0:
+          print(f"10 games: {downloaded_games}")
+          
         if downloaded_games % 100 == 0:
           print(f"100 games: {downloaded_games}")
     

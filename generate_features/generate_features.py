@@ -3,10 +3,11 @@ import os
 from csv import writer
 
 class GenerateFeatures:
-    def __init__(self, year: str, month: str, day: str, max_games_to_process=float('inf')) -> None:
+    def __init__(self, year: str, month: str, day: str, target_board_size: int) -> None:
         self.year = year
         self.month = month
         self.day = day
+        self.target_board_size = target_board_size
         self.pathway = f"/Users/jonahlipsky/repos/go/sgfs-by-date/{self.year}/{self.month}/{self.day}"
         
     def fetch_all_game_file_names(self):
@@ -19,36 +20,46 @@ class GenerateFeatures:
         
         return games
     
-    def fetch_and_store_games(self, target_size):
-        names = self.fetch_names_of_all_games_of_target_size(target_size)
-        self.store_paths(names, target_size)
-
+    def fetch_and_store_game_features(self):
+        games = self.fetch_games_of_target_size()
+        self.generate_and_store_features(games)
     
-    def fetch_names_of_all_games_of_target_size(self, target_size):
+    def fetch_games_of_target_size(self):
         game_names = self.fetch_all_game_file_names()
         target_size_games = []
         for game_name in game_names:
             game_path = self.pathway + "/" + game_name
             with open(game_path, "rb") as f:
                 game = sgf.Sgf_game.from_bytes(f.read())
-                if game.get_size() == target_size:
-                    target_size_games.append(game_name)
+                if self.game_is_target_size(game):
+                    target_size_games.append(game)
         
         return target_size_games
 
-    def store_paths(self, game_names, target_size):
-        if len(game_names) > 0:
+    def game_is_target_size(self, game):
+        return game.get_size() == self.target_board_size
+
+    def generate_features(self, game):
+        ['hello']
+
+    def generate_and_store_features(self, games):
+        if len(games) > 0:
             # note that this will write into any file that already exists
-            with open(f"size_{target_size}_game_names/{self.year}/size_{target_size}.csv", 'a') as f_object:
+            prefix = f"size_{self.target_board_size}_games/{self.year}"
+            if not os.isdir(prefix):
+                os.mkdir(prefix)
+            
+            with open(f"{prefix}/{self.month}_{self.day}.csv", 'a') as f_object:
                 writer_obj = writer(f_object)
                 
-                for name in game_names:
-                    writer_obj.writerow([self.year, self.month, self.day, name])
+                for game in games:
+                    writer_obj.writerow(self.generate_features(game))
                 f_object.close()
         else:
             print('no games')
 
+
 if __name__ == '__main__':
-    GF = GenerateFeatures('2005', '11', '05')
-    GF.fetch_and_store_games(9)
+    GF = GenerateFeatures('2005', '11', '05', 9)
+    GF.fetch_and_store_games()
 

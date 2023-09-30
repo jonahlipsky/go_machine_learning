@@ -8,15 +8,14 @@
 9 for 1d - 9d black
 30 for 30k - 1k white
 9 for 1d - 9d white
-1 for which move of the game we're on.
-1 for black captures
-1 for white captures
-1 for is_whites_move
 1 for is_blacks_move
 
-Altogether 245 features.
+Altogether 241 features.
 We need to include 82 output columns as we parse the game, as well: one for each position and one for "NoMove". 
-So 245 + 82 = 327 columns
+So 241 + 82 = 323 columns
+
+I'm not including the black captures and white captures because to do so would involve taking the handicap into account. Points, Komi, and the Handicap should probably be V2. I'm also letting turn of the game be V2 since that is also a continuous variable. 
+
 
 ### Possible neural network architecture.
 

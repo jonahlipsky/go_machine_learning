@@ -55,7 +55,7 @@ class FeatureRow:
         property_map = root.get_raw_property_map()
         black_rank = property_map['BR']
         white_rank = property_map['WR']
-
+        consecutive_no_moves = 0
         for node in game_sequence:
             if node == root:
                 continue
@@ -113,10 +113,17 @@ class FeatureRow:
                 one_row[-1] = 1
 
                 # because the move wasn't on any of the coordinates, 
-                # which are the reset of the features
+                # which are the rest of the features
                 feature_rows.append(one_row)
-                continue
+                consecutive_no_moves += 1
+                
+                # The game is over if there are two consecutive no-moves
+                if consecutive_no_moves == 2:
+                    return feature_rows
+                else:
+                    continue
             
+            consecutive_no_moves = 0
             cur_move_row, cur_move_col = cur_move_coords
             for row in range(self.board_size):
                 for col in range(self.board_size):
@@ -126,4 +133,5 @@ class FeatureRow:
                     cur_feature += 1
 
             feature_rows.append(one_row)
+        return feature_rows
     

@@ -1,0 +1,8 @@
+sgfs-by-date.tar.gz
+samplegame*
+**/__pycache__
+**/.DS_STORE
+games/game_dumps/*
+games/search_state.pk1
+sgfs-by-date
+generate_features/size_9_game_names

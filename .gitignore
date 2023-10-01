@@ -6,3 +6,4 @@ games/game_dumps/*
 games/search_state.pk1
 sgfs-by-date
 size_9_games
+.ipynb_checkpoints/

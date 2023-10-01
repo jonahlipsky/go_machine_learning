@@ -15,10 +15,7 @@ class GenerateFeatures:
     def fetch_all_game_file_names(self):
         games = []
         if os.path.isdir(self.pathway):
-            print('pathway')
             games = os.listdir(self.pathway)
-        else:
-            print('not a pathway')
         
         return games
     
@@ -74,21 +71,18 @@ class GenerateFeatures:
 
 
 if __name__ == '__main__':
-    year = 2006
-    month = 11
-    day = 5
+    for year in range(2007, 2009): 
+        for month in range(1,13):
+            for day in range(1,32):
+                if day < 10:
+                    day_str = '0' + str(day)
+                if month < 10:
+                    month_str = '0' + str(month)
+                year_str = str(year)
 
-    for month in range(1,13):
-        for day in range(1,32):
-            if day < 10:
-                day_str = '0' + str(day)
-            if month < 10:
-                month_str = '0' + str(month)
-            year_str = str(year)
-
-            if os.path.isdir(f"generate_features/sgfs-by-date/{year_str}/{month_str}/{day_str}"):
-                GF = GenerateFeatures(year_str, month_str, day_str, 9)
-                GF.fetch_and_store_game_features_and_targets()
-            else:
-                print('No games.')
+                if os.path.isdir(f"generate_features/sgfs-by-date/{year_str}/{month_str}/{day_str}"):
+                    GF = GenerateFeatures(year_str, month_str, day_str, 9)
+                    GF.fetch_and_store_game_features_and_targets()
+                else:
+                    print('No games.')
 

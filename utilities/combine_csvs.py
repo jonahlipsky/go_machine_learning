@@ -8,10 +8,11 @@ def combine_csvs(csv_name_list, output_csv_name, has_headers=True):
         for i, csv_name in enumerate(csv_name_list):
             with open(csv_name, 'r') as read_f:
                 for j, line in enumerate(read_f):
-                    if has_headers and j == 0 and i != 0:
-                        continue # only write the headers from the first CSV
 
-                    writer_obj.writerow(line.split(','))
+                    if has_headers and j == 0:
+                        continue
+
+                    writer_obj.writerow(line.rstrip().split(','))
             read_f.close()
         write_f_object.close()
 
@@ -20,7 +21,7 @@ if __name__ == '__main__':
         'size_9_games/v1/2005/2005-features.csv',
         'size_9_games/v1/2006/2006-features.csv',
         'size_9_games/v1/2007/2007-features.csv',
-        'size_9_games/v1/2008/2008-features.csv',
+        # 'size_9_games/v1/2008/2008-features.csv',
     ]
-    output_csv = '/size_9_games/v1/2005-2008.csv'
+    output_csv = '/size_9_games/v1/2005-2007.csv'
     combine_csvs(names, output_csv)

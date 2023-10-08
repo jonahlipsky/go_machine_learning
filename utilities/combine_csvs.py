@@ -18,10 +18,10 @@ def combine_csvs(csv_name_list, output_csv_name, has_headers=True):
 
 if __name__ == '__main__':
     names = [
-        'size_9_games/v1/2005/2005-features.csv',
+        # 'size_9_games/v1/2005/2005-features.csv',
         'size_9_games/v1/2006/2006-features.csv',
         'size_9_games/v1/2007/2007-features.csv',
-        # 'size_9_games/v1/2008/2008-features.csv',
+        'size_9_games/v1/2008/2008-features.csv',
     ]
-    output_csv = '/size_9_games/v1/2005-2007.csv'
+    output_csv = '/size_9_games/v1/2006-2008-moveone.csv'
     combine_csvs(names, output_csv)

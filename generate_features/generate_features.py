@@ -19,9 +19,9 @@ class GenerateFeatures:
         
         return games
     
-    def fetch_and_store_game_features_and_targets(self):
+    def fetch_and_store_game_features_and_targets(self, move_start=0, move_end=float('inf')):
         games = self.fetch_games_of_target_size()
-        self.generate_and_store_features(games)
+        self.generate_and_store_features(games, move_start, move_end)
     
     def fetch_games_of_target_size(self):
         game_names = self.fetch_all_game_file_names()
@@ -38,7 +38,7 @@ class GenerateFeatures:
     def game_is_target_size(self, game):
         return game.get_size() == self.target_board_size
 
-    def generate_and_store_features(self, games):
+    def generate_and_store_features(self, games, move_start, move_end):
         if len(games) > 0:
             # note that this will write into any file that already exists
             prefix = ""
@@ -50,7 +50,7 @@ class GenerateFeatures:
                 
                 if not os.path.isdir(prefix):
                     os.mkdir(prefix)
-                    
+            
             file_name = f"{prefix}/{self.year}-features.csv"
             if not os.path.isfile(file_name):
                 with open(file_name, 'a') as f_object:
@@ -63,7 +63,12 @@ class GenerateFeatures:
                 
                 for game in games:
                     feature_rows = FeatureRow(game, 'v1')
-                    for row in feature_rows.list_of_feature_rows:
+                    for i, row in enumerate(feature_rows.list_of_feature_rows):
+                        if i < move_start:
+                            continue
+                        elif i >= move_end:
+                            break
+
                         writer_obj.writerow(row)
                 f_object.close()
         else:
@@ -71,7 +76,7 @@ class GenerateFeatures:
 
 
 if __name__ == '__main__':
-    for year in range(2007, 2009): 
+    for year in range(2005, 2009): 
         for month in range(1,13):
             for day in range(1,32):
                 if day < 10:
@@ -82,7 +87,7 @@ if __name__ == '__main__':
 
                 if os.path.isdir(f"generate_features/sgfs-by-date/{year_str}/{month_str}/{day_str}"):
                     GF = GenerateFeatures(year_str, month_str, day_str, 9)
-                    GF.fetch_and_store_game_features_and_targets()
+                    GF.fetch_and_store_game_features_and_targets(0,1)
                 else:
                     print('No games.')
 
